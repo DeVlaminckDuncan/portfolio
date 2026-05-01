@@ -10,6 +10,10 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "check": "astro check",
+    "check:ci": "biome ci . && astro check",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -18,6 +22,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@biomejs/biome": "2.4.13",
     "typescript": "^6.0.3"
   }
 }
