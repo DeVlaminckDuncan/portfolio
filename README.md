@@ -76,6 +76,7 @@ Run commands from the repository root:
 
 - Static output is configured explicitly in `astro.config.mjs`.
 - TypeScript uses Astro's strict configuration.
+- Visual foundations are documented in [`docs/design-system.md`](docs/design-system.md).
 - The repository currently has no blog, CMS, backend, authentication, analytics,
   or deployment adapter.
 - Documentation should stay useful for both humans and coding agents. If an
