@@ -1,4 +1,5 @@
 ---
+import Container from '../components/Container.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -10,6 +11,19 @@ const {
   title = 'Duncan De Vlaminck',
   description = 'Personal software engineering portfolio.',
 } = Astro.props;
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+const year = new Date().getFullYear();
+
+const isCurrentPath = (href: string) =>
+  href === '/' ? currentPath === '/' : currentPath.startsWith(href);
 ---
 
 <!doctype html>
@@ -22,7 +36,154 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>
-  <body>
-    <slot />
+  <body class="site-body">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header">
+      <Container>
+        <div class="site-header__inner">
+          <a class="site-brand" href="/" aria-label="Duncan De Vlaminck home">
+            Duncan De Vlaminck
+          </a>
+
+          <nav class="site-nav" aria-label="Primary navigation">
+            {
+              navItems.map((item) => (
+                <a
+                  href={item.href}
+                  aria-current={isCurrentPath(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              ))
+            }
+          </nav>
+        </div>
+      </Container>
+    </header>
+
+    <main id="main-content" class="site-main">
+      <Container>
+        <slot />
+      </Container>
+    </main>
+
+    <footer class="site-footer">
+      <Container>
+        <div class="site-footer__inner">
+          <p>&copy; {year} Duncan De Vlaminck</p>
+          <a href="/contact/">Contact</a>
+        </div>
+      </Container>
+    </footer>
   </body>
 </html>
+
+<style>
+  .site-body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .skip-link {
+    position: fixed;
+    z-index: 10;
+    top: var(--space-4);
+    left: var(--space-4);
+    transform: translateY(calc(-100% - var(--space-4)));
+    border-radius: var(--radius-sm);
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--space-2) var(--space-3);
+    text-decoration: none;
+    transition: transform 160ms ease;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-page);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+  }
+
+  .site-brand {
+    flex: 0 1 auto;
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-snug);
+    text-decoration: none;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .site-nav a {
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-snug);
+    text-decoration: none;
+  }
+
+  .site-nav a:hover,
+  .site-nav a[aria-current='page'] {
+    color: var(--color-accent);
+  }
+
+  .site-main {
+    flex: 1;
+    padding: var(--section-spacing) 0;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .site-footer__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-6) 0;
+  }
+
+  .site-footer p {
+    margin: 0;
+  }
+
+  .site-footer a {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  @media (max-width: 40rem) {
+    .site-header__inner,
+    .site-footer__inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .site-nav {
+      justify-content: flex-start;
+    }
+  }
+</style>

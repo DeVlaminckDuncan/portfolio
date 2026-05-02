@@ -62,6 +62,7 @@
 }
 
 body {
+  overflow-x: clip;
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
@@ -70,6 +71,14 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
 }
 
 a {
@@ -86,12 +95,6 @@ a:hover {
 :focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 3px;
-}
-
-main {
-  width: min(100% - var(--space-8), var(--container-page));
-  margin: 0 auto;
-  padding: var(--section-spacing) 0;
 }
 
 h1,

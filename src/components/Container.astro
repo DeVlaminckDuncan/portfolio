@@ -1,0 +1,41 @@
+---
+interface Props {
+  as?: 'div' | 'main' | 'section' | 'header' | 'footer' | 'nav';
+  size?: 'page' | 'readable';
+  class?: string;
+}
+
+const {
+  as = 'div',
+  size = 'page',
+  class: className,
+} = Astro.props as Props;
+
+const Element = as;
+---
+
+<Element class:list={['container', `container--${size}`, className]}>
+  <slot />
+</Element>
+
+<style>
+  .container {
+    width: min(100% - var(--space-8), var(--container-page));
+    margin-inline: auto;
+  }
+
+  .container--readable {
+    width: min(100% - var(--space-8), var(--container-readable));
+  }
+
+  @media (max-width: 48rem) {
+    .container,
+    .container--readable {
+      width: min(100% - var(--space-6), var(--container-page));
+    }
+
+    .container--readable {
+      max-width: var(--container-readable);
+    }
+  }
+</style>

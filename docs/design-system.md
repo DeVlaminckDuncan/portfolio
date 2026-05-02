@@ -52,10 +52,10 @@ Spacing is based on the `--space-*` token scale in `global.css`. New sections
 should use `--section-spacing` for vertical rhythm instead of ad hoc padding.
 
 Use `--container-page` for full page content and `--container-readable` for
-long-form text. The base `main` element already applies the page container and
-section padding. Use `--radius-sm`, `--radius-md`, and `--radius-lg` for
-component corners; avoid larger radii unless a later issue adds a specific
-component need.
+long-form text. Shared page width is applied through `src/components/Container.astro`;
+the base layout owns the document-level `main` element and applies section
+padding. Use `--radius-sm`, `--radius-md`, and `--radius-lg` for component
+corners; avoid larger radii unless a later issue adds a specific component need.
 
 ## Theme Policy
 
