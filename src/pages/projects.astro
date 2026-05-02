@@ -1,0 +1,79 @@
+---
+import ProjectCard from '../components/ProjectCard.astro';
+import Section from '../components/Section.astro';
+import { projectSummaries } from '../data/projects';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const visibleProjects = projectSummaries.filter((project) => project.draft !== true);
+---
+
+<BaseLayout
+  title="Projects | Duncan De Vlaminck"
+  description="A first public-safe portfolio project entry for Duncan De Vlaminck. Additional case studies will be added as sensitive details are reviewed."
+>
+  <Section
+    heading="Projects"
+    headingLevel={1}
+    description="A first public-safe project entry. Additional case studies will be added as sensitive details are reviewed."
+  >
+    {
+      visibleProjects.length > 0 ? (
+        <div class="projects-grid">
+          {visibleProjects.map((project) => (
+            <ProjectCard
+              title={project.title}
+              description={project.description}
+              techStack={project.techStack}
+              {...(project.href ? { href: project.href } : {})}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="projects-empty" role="status">
+          <h2>Project summaries are being prepared.</h2>
+          <p>
+            Public-safe project entries will appear here once the first content
+            pass is ready.
+          </p>
+        </div>
+      )
+    }
+  </Section>
+</BaseLayout>
+
+<style>
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .projects-grid :global(.project-card) {
+    min-height: 100%;
+  }
+
+  .projects-empty {
+    display: grid;
+    max-width: var(--container-readable);
+    gap: var(--space-3);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    padding: var(--space-6);
+  }
+
+  .projects-empty h2 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+  }
+
+  .projects-empty p {
+    margin: 0;
+  }
+
+  @media (max-width: 48rem) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
