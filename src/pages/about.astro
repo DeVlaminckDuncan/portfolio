@@ -1,0 +1,261 @@
+---
+import Section from '../components/Section.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const systemsCapabilities = [
+  {
+    title: 'ERP specialization',
+    description:
+      'I work on ERP software for service and project-based organizations, where planning, operations, finance, and service workflows need to stay understandable across teams.',
+  },
+  {
+    title: 'Planning workflows',
+    description:
+      'I build and improve planning flows for site, project, and job planning, including scheduling, filtering, load indicators, and multi-job operations.',
+  },
+  {
+    title: 'Operational fit',
+    description:
+      'I look for software decisions that match how people actually plan, review, correct, and repeat their daily work.',
+  },
+];
+
+const technicalRange = [
+  {
+    title: 'Web interfaces',
+    description:
+      'React, HTML, CSS, JavaScript, and FileMaker web viewers for business-facing interfaces that need to stay clear under real operational use.',
+  },
+  {
+    title: 'APIs and data',
+    description:
+      'REST APIs, GraphQL, SQL, JSON schema extraction, and integration work for systems that need reliable handoffs between tools and teams.',
+  },
+  {
+    title: 'Mobile delivery',
+    description:
+      'React Native and TypeScript experience across authentication, REST and GraphQL integrations, frontend implementation, and store release workflows.',
+  },
+];
+
+const workingPrinciples = [
+  {
+    title: 'Business context first',
+    description:
+      'Technical choices should be grounded in the operational problem, the people using the system, and the cost of getting details wrong.',
+  },
+  {
+    title: 'Durable systems',
+    description:
+      'The best business software is maintainable, traceable, and boring in the right places, especially around critical data and repeated workflows.',
+  },
+  {
+    title: 'Readable implementation',
+    description:
+      'Code, scripts, layouts, and automation should be clear enough to review, change, and support after the first version ships.',
+  },
+  {
+    title: 'Human-reviewed automation',
+    description:
+      'AI assistance is strongest when it handles structure and repetition while people keep responsibility for judgment, quality, and final decisions.',
+  },
+];
+---
+
+<BaseLayout
+  title="About | Duncan De Vlaminck"
+  description="About Duncan De Vlaminck, a software engineer focused on ERP systems, FileMaker platforms, web and mobile interfaces, APIs, practical AI workflows, and agentic coding."
+>
+  <Section
+    heading="About"
+    headingLevel={1}
+    description="I build business software across ERP systems, FileMaker platforms, web and mobile interfaces, APIs, and practical AI-assisted delivery workflows."
+    class="about-hero"
+  >
+    <p class="about-hero__lead">
+      My work sits close to business operations: the planning flows, records,
+      reviews, interfaces, APIs, mobile touchpoints, and automations that teams
+      rely on to keep complex work moving. I care about software that is
+      specific enough to be useful, understandable enough to maintain, and
+      structured enough to improve over time.
+    </p>
+  </Section>
+
+  <Section
+    heading="Systems work"
+    description="ERP work needs both technical execution and the judgment to understand where a process can be simplified, automated, or made more reliable for service and project-based work."
+  >
+    <div class="capability-grid">
+      {
+        systemsCapabilities.map((capability) => (
+          <article class="capability-card">
+            <h3>{capability.title}</h3>
+            <p>{capability.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section
+    heading="FileMaker platforms"
+    description="FileMaker is most valuable when it is treated as a durable application platform, not only a quick database."
+  >
+    <div class="text-panel">
+      <p>
+        I work with FileMaker data models, scripts, layouts, web viewers, and
+        HTML/CSS/JavaScript interfaces to support custom workflows that need to
+        stay close to business users. The goal is not novelty for its own sake;
+        it is making specialized software easier to use, easier to reason
+        about, and easier to extend safely.
+      </p>
+      <p>
+        That means paying attention to naming, relationships, script structure,
+        interface details, and the practical maintenance path for the people who
+        will keep using and adapting the system.
+      </p>
+    </div>
+  </Section>
+
+  <Section
+    heading="Technical range"
+    description="My ERP and FileMaker work is supported by broader full-stack, mobile, API, and data experience."
+  >
+    <div class="capability-grid">
+      {
+        technicalRange.map((capability) => (
+          <article class="capability-card">
+            <h3>{capability.title}</h3>
+            <p>{capability.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section
+    heading="AI-assisted workflows"
+    description="AI is useful when it is applied to specific work: classification, extraction, review, and repeatable support tasks."
+  >
+    <div class="text-panel">
+      <p>
+        I use AI-assisted workflows in practical professional terms: using the
+        OpenAI API to classify email, process invoice and order confirmations,
+        extract structured JSON data, draft implementation options, and support
+        review steps. The emphasis is on making repetitive work more consistent
+        while preserving human responsibility for decisions that require
+        context.
+      </p>
+      <p>
+        Good AI workflow design starts with the input, the expected output, the
+        failure modes, and the review path. The useful question is not whether a
+        workflow sounds advanced, but whether it reduces friction without hiding
+        risk.
+      </p>
+    </div>
+  </Section>
+
+  <Section
+    heading="Agentic coding"
+    description="I use coding agents as structured collaborators for project setup, implementation, review, and verification."
+  >
+    <div class="text-panel">
+      <p>
+        Tools like ChatGPT, Codex, and OpenCode are part of my development
+        workflow. I use them to shape implementation plans, inspect unfamiliar
+        code, draft focused changes, review output, and run verification loops.
+        The value is in disciplined use: clear scope, grounded context, small
+        changes, and evidence before calling work complete.
+      </p>
+      <p>
+        Agentic coding does not remove engineering judgment. It makes that
+        judgment more important by moving faster through setup and iteration,
+        while still requiring careful review of behavior, security,
+        maintainability, and fit with the surrounding system.
+      </p>
+    </div>
+  </Section>
+
+  <Section
+    heading="Working principles"
+    description="A few principles guide how I approach business systems, automation, and delivery work."
+  >
+    <div class="principles-grid">
+      {
+        workingPrinciples.map((principle) => (
+          <article class="principle-card">
+            <h3>{principle.title}</h3>
+            <p>{principle.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .about-hero__lead {
+    color: var(--color-text);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .capability-grid,
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .principles-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capability-card,
+  .principle-card,
+  .text-panel {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    padding: var(--space-6);
+  }
+
+  .capability-card,
+  .principle-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+  }
+
+  .capability-card h3,
+  .principle-card h3 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+  }
+
+  .capability-card p,
+  .principle-card p,
+  .text-panel p:last-child {
+    margin-block-end: 0;
+  }
+
+  .text-panel {
+    max-width: var(--container-readable);
+  }
+
+  @media (max-width: 56rem) {
+    .capability-grid,
+    .principles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .about-hero__lead,
+    .capability-card p,
+    .principle-card p,
+    .text-panel p {
+      overflow-wrap: break-word;
+    }
+  }
+</style>
