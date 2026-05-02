@@ -1,4 +1,8 @@
 ---
+import Button from '../components/Button.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Section from '../components/Section.astro';
+import TextLink from '../components/TextLink.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
@@ -6,12 +10,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   title="Duncan De Vlaminck | Software Engineering Portfolio"
   description="A static-first software engineering portfolio built with Astro and TypeScript."
 >
-  <section aria-labelledby="intro-heading">
-    <p>Software Engineering Portfolio</p>
-    <h1 id="intro-heading">Duncan De Vlaminck</h1>
-    <p>
-      This site is ready for future portfolio sections, projects, contact details,
-      and deployment setup.
-    </p>
-  </section>
+  <Section
+    eyebrow="Software Engineering Portfolio"
+    heading="Duncan De Vlaminck"
+    headingLevel={1}
+    description="This site is ready for future portfolio sections, projects, contact details, and deployment setup."
+  >
+    <div class="intro-actions">
+      <Button href="/projects/">View projects</Button>
+      <TextLink href="/about/">Read about the approach</TextLink>
+    </div>
+  </Section>
+
+  <Section
+    heading="Reusable component preview"
+    description="A neutral preview of the shared UI primitives future portfolio pages can use."
+  >
+    <ProjectCard
+      title="Project card component"
+      description="A static-friendly card pattern for upcoming portfolio entries."
+      techStack={['Astro', 'TypeScript', 'CSS']}
+    />
+  </Section>
 </BaseLayout>
+
+<style>
+  .intro-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+</style>

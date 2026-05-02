@@ -1,0 +1,38 @@
+---
+interface Props {
+  href: string;
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const { href, target, rel, ariaLabel, class: className } = Astro.props as Props;
+
+const safeRel = target === '_blank' && rel === undefined ? 'noopener noreferrer' : rel;
+---
+
+<a
+  class:list={['text-link', className]}
+  href={href}
+  target={target}
+  rel={safeRel}
+  aria-label={ariaLabel}
+>
+  <slot />
+</a>
+
+<style>
+  .text-link {
+    color: var(--color-accent);
+    font-weight: var(--font-weight-semibold);
+    text-decoration-color: color-mix(in srgb, var(--color-accent), transparent 45%);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.22em;
+  }
+
+  .text-link:hover {
+    color: var(--color-text);
+    text-decoration-color: currentColor;
+  }
+</style>

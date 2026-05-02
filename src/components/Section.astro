@@ -1,0 +1,76 @@
+---
+interface Props {
+  heading: string;
+  headingLevel?: 1 | 2 | 3;
+  eyebrow?: string;
+  description?: string;
+  id?: string;
+  class?: string;
+}
+
+const {
+  heading,
+  headingLevel = 2,
+  eyebrow,
+  description,
+  id,
+  class: className,
+} = Astro.props as Props;
+
+const slug = heading
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+const headingId = id ?? `${slug || 'section'}-heading`;
+const Heading = `h${headingLevel}` as 'h1' | 'h2' | 'h3';
+---
+
+<section class:list={['section', className]} aria-labelledby={headingId}>
+  <div class="section__header">
+    {eyebrow && <p class="section__eyebrow">{eyebrow}</p>}
+    <Heading id={headingId}>{heading}</Heading>
+    {description && <p class="section__description">{description}</p>}
+  </div>
+
+  <div class="section__body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .section + .section {
+    margin-block-start: var(--section-spacing);
+  }
+
+  .section__header {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .section__eyebrow {
+    margin: 0;
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+  }
+
+  .section :is(h1, h2, h3) {
+    max-width: var(--container-readable);
+    margin: 0;
+    font-size: var(--font-size-3xl);
+  }
+
+  .section__description {
+    margin: 0;
+  }
+
+  .section__body {
+    min-width: 0;
+  }
+</style>

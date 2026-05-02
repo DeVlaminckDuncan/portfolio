@@ -1,0 +1,73 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary';
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  target,
+  rel,
+  ariaLabel,
+  class: className,
+} = Astro.props as Props;
+
+const safeRel = target === '_blank' && rel === undefined ? 'noopener noreferrer' : rel;
+---
+
+<a
+  class:list={['button', `button--${variant}`, className]}
+  href={href}
+  target={target}
+  rel={safeRel}
+  aria-label={ariaLabel}
+>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+    padding: var(--space-3) var(--space-5);
+    text-align: center;
+    text-decoration: none;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .button--primary {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+
+  .button--primary:hover {
+    background: var(--color-text);
+    color: var(--color-accent-foreground);
+  }
+
+  .button--secondary {
+    border-color: var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-accent);
+  }
+
+  .button--secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+</style>
