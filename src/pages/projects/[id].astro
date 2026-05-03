@@ -1,0 +1,201 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import Section from '../../components/Section.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+type Project = CollectionEntry<'projects'>;
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => data.draft !== true);
+
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props as Props;
+const { Content } = await render(project);
+
+const {
+  title,
+  description,
+  techStack,
+  challenges,
+  outcome,
+  links,
+  seoTitle,
+  seoDescription,
+} = project.data;
+
+const pageTitle = seoTitle ?? `${title} | Duncan De Vlaminck`;
+const pageDescription = seoDescription ?? description;
+const hasOverview = typeof project.body === 'string' && project.body.trim().length > 0;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Section heading={title} headingLevel={1} description={description} class="project-detail-hero">
+    <a class="project-detail__back-link" href="/projects/">Back to projects</a>
+  </Section>
+
+  {
+    hasOverview && (
+      <Section heading="Overview" class="project-detail-section">
+        <div class="project-detail__prose">
+          <Content />
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    techStack.length > 0 && (
+      <Section heading="Tech stack" class="project-detail-section">
+        <ul class="project-detail__tech-list" aria-label={`${title} technology stack`}>
+          {techStack.map((technology) => (
+            <li>{technology}</li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  {
+    links && links.length > 0 && (
+      <Section heading="Project links" class="project-detail-section">
+        <ul class="project-detail__links">
+          {links.map((link) => (
+            <li>
+              <a href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  {
+    challenges && challenges.length > 0 && (
+      <Section heading="Challenges" class="project-detail-section">
+        <ul class="project-detail__list">
+          {challenges.map((challenge) => (
+            <li>{challenge}</li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  {
+    outcome && outcome.length > 0 && (
+      <Section heading="Outcome" class="project-detail-section">
+        <ul class="project-detail__list">
+          {outcome.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .project-detail-hero :global(.section__body) {
+    order: -1;
+  }
+
+  .project-detail__back-link {
+    display: inline-flex;
+    width: fit-content;
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-decoration-color: color-mix(in srgb, var(--color-accent), transparent 45%);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.22em;
+  }
+
+  .project-detail__back-link:hover {
+    color: var(--color-text);
+    text-decoration-color: currentColor;
+  }
+
+  .project-detail-section {
+    max-width: var(--container-readable);
+  }
+
+  .project-detail__prose {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .project-detail__prose :global(p) {
+    margin: 0;
+  }
+
+  .project-detail__tech-list,
+  .project-detail__links,
+  .project-detail__list {
+    margin: 0;
+  }
+
+  .project-detail__tech-list,
+  .project-detail__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+  }
+
+  .project-detail__tech-list li,
+  .project-detail__links a {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-snug);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .project-detail__links a {
+    display: inline-flex;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition:
+      border-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .project-detail__links a:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .project-detail__list {
+    display: grid;
+    gap: var(--space-3);
+    max-width: var(--container-readable);
+    padding-inline-start: var(--space-6);
+  }
+
+  .project-detail__list li {
+    color: var(--color-text-muted);
+    line-height: var(--line-height-relaxed);
+  }
+
+  @media (max-width: 40rem) {
+    .project-detail__prose,
+    .project-detail__list li {
+      overflow-wrap: break-word;
+    }
+  }
+</style>

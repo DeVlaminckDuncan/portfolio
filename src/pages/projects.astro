@@ -1,10 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import ProjectCard from '../components/ProjectCard.astro';
 import Section from '../components/Section.astro';
-import { projectSummaries } from '../data/projects';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const visibleProjects = projectSummaries.filter((project) => project.draft !== true);
+const visibleProjects = (await getCollection('projects', ({ data }) => data.draft !== true)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
 ---
 
 <BaseLayout
@@ -21,10 +23,10 @@ const visibleProjects = projectSummaries.filter((project) => project.draft !== t
         <div class="projects-grid">
           {visibleProjects.map((project) => (
             <ProjectCard
-              title={project.title}
-              description={project.description}
-              techStack={project.techStack}
-              {...(project.href ? { href: project.href } : {})}
+              title={project.data.title}
+              description={project.data.description}
+              techStack={project.data.techStack}
+              href={`/projects/${project.id}/`}
             />
           ))}
         </div>
