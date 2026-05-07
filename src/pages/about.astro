@@ -1,5 +1,7 @@
 ---
+import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
+import { cvFileName, cvHref } from '../data/cv';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const systemsCapabilities = [
@@ -79,6 +81,12 @@ const workingPrinciples = [
       specific enough to be useful, understandable enough to maintain, and
       structured enough to improve over time.
     </p>
+
+    <div class="about-hero__actions">
+      <Button href={cvHref} variant="secondary" download={cvFileName}>
+        Download CV
+      </Button>
+    </div>
   </Section>
 
   <Section
@@ -198,6 +206,12 @@ const workingPrinciples = [
     color: var(--color-text);
     font-size: var(--font-size-lg);
     line-height: var(--line-height-relaxed);
+  }
+
+  .about-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
   }
 
   .capability-grid,

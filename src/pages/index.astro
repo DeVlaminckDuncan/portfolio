@@ -1,6 +1,7 @@
 ---
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
+import { cvFileName, cvHref } from '../data/cv';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const focusAreas = [
@@ -45,6 +46,9 @@ const focusAreas = [
 
     <div class="hero__actions">
       <Button href="/projects/">View projects</Button>
+      <Button href={cvHref} variant="secondary" download={cvFileName}>
+        Download CV
+      </Button>
     </div>
   </Section>
 

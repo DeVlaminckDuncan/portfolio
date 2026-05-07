@@ -4,6 +4,7 @@ interface Props {
   variant?: 'primary' | 'secondary';
   target?: string;
   rel?: string;
+  download?: string | boolean;
   ariaLabel?: string;
   class?: string;
 }
@@ -13,6 +14,7 @@ const {
   variant = 'primary',
   target,
   rel,
+  download,
   ariaLabel,
   class: className,
 } = Astro.props as Props;
@@ -25,6 +27,7 @@ const safeRel = target === '_blank' && rel === undefined ? 'noopener noreferrer'
   href={href}
   target={target}
   rel={safeRel}
+  download={download}
   aria-label={ariaLabel}
 >
   <slot />

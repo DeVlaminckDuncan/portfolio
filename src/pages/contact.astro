@@ -2,6 +2,7 @@
 import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
 import TextLink from '../components/TextLink.astro';
+import { cvFileName, cvHref } from '../data/cv';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const emailAddress = 'duncandv123@gmail.com';
@@ -58,6 +59,21 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
           View LinkedIn
         </Button>
       </article>
+
+      <article class="contact-card">
+        <div class="contact-card__content">
+          <p class="contact-card__label">CV</p>
+          <h3>Download the current CV</h3>
+          <p>
+            Use the PDF CV for a concise overview of experience, technical
+            range, and professional background.
+          </p>
+        </div>
+
+        <Button href={cvHref} variant="secondary" download={cvFileName}>
+          Download CV
+        </Button>
+      </article>
     </div>
   </Section>
 
@@ -85,7 +101,7 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
 
   .contact-methods {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
   }
 
@@ -133,7 +149,7 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
     max-width: var(--container-readable);
   }
 
-  @media (max-width: 48rem) {
+  @media (max-width: 56rem) {
     .contact-methods {
       grid-template-columns: 1fr;
     }
