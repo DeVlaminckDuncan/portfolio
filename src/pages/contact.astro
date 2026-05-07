@@ -1,0 +1,149 @@
+---
+import Button from '../components/Button.astro';
+import Section from '../components/Section.astro';
+import TextLink from '../components/TextLink.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const emailAddress = 'duncandv123@gmail.com';
+const emailHref = `mailto:${emailAddress}`;
+const linkedInHref = 'https://www.linkedin.com/in/duncandv';
+---
+
+<BaseLayout
+  title="Contact | Duncan De Vlaminck"
+  description="Contact Duncan De Vlaminck for professional follow-up through email or LinkedIn."
+>
+  <Section
+    heading="Contact"
+    headingLevel={1}
+    description="For professional follow-up, use email or LinkedIn. I keep contact options direct so the next step is clear."
+    class="contact-hero"
+  >
+    <p class="contact-hero__lead">
+      I am open to conversations around business software, ERP and FileMaker
+      systems, web and mobile interfaces, AI workflows, and practical agentic
+      coding processes.
+    </p>
+  </Section>
+
+  <Section
+    heading="Contact options"
+    description="Direct links are the supported contact path for this static portfolio."
+  >
+    <div class="contact-methods">
+      <article class="contact-card">
+        <div class="contact-card__content">
+          <p class="contact-card__label">Email</p>
+          <h3>Start with a direct message</h3>
+          <p>
+            Send context, questions, or professional follow-up to
+            <TextLink href={emailHref}>{emailAddress}</TextLink>.
+          </p>
+        </div>
+
+        <Button href={emailHref}>Email Duncan</Button>
+      </article>
+
+      <article class="contact-card">
+        <div class="contact-card__content">
+          <p class="contact-card__label">LinkedIn</p>
+          <h3>Connect professionally</h3>
+          <p>
+            Use LinkedIn for professional context, profile details, and follow-up
+            outside of email.
+          </p>
+        </div>
+
+        <Button href={linkedInHref} variant="secondary" target="_blank">
+          View LinkedIn
+        </Button>
+      </article>
+    </div>
+  </Section>
+
+  <Section
+    heading="Contact form status"
+    description="A contact form is intentionally deferred until there is a real backend path or form service."
+  >
+    <div class="form-status">
+      <p>
+        This site is currently static-only, with no backend route, form provider,
+        or deployment adapter for handling submissions. To avoid a non-functional
+        form, the page uses direct contact links until that infrastructure is
+        selected and implemented.
+      </p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .contact-hero__lead {
+    color: var(--color-text);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .contact-methods {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+
+  .contact-card,
+  .form-status {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    padding: var(--space-6);
+  }
+
+  .contact-card {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .contact-card__content {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .contact-card__label {
+    margin: 0;
+    color: var(--color-accent);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-snug);
+  }
+
+  .contact-card h3 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+  }
+
+  .contact-card p,
+  .form-status p {
+    margin-block-end: 0;
+  }
+
+  .form-status {
+    max-width: var(--container-readable);
+  }
+
+  @media (max-width: 48rem) {
+    .contact-methods {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .contact-hero__lead,
+    .contact-card p,
+    .form-status p {
+      overflow-wrap: break-word;
+    }
+  }
+</style>
