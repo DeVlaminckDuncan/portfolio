@@ -11,12 +11,12 @@ const visibleProjects = (await getCollection('projects', ({ data }) => data.draf
 
 <BaseLayout
   title="Projects | Duncan De Vlaminck"
-  description="A first public-safe portfolio project entry for Duncan De Vlaminck. Additional case studies will be added as sensitive details are reviewed."
+  description="Selected public-safe portfolio project entries for Duncan De Vlaminck, covering ERP systems, mobile delivery, web interfaces, APIs, and AI-assisted workflows."
 >
   <Section
     heading="Projects"
     headingLevel={1}
-    description="A first public-safe project entry. Additional case studies will be added as sensitive details are reviewed."
+    description="Selected public-safe project entries covering ERP systems, mobile delivery, web interfaces, APIs, and AI-assisted workflows."
   >
     {
       visibleProjects.length > 0 ? (

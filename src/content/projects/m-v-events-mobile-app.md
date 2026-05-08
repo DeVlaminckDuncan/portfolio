@@ -12,7 +12,7 @@ techStack:
   - "QR scanning"
   - "Google Play"
   - "Apple App Store"
-order: 10
+order: 20
 challenges:
   - "Design repeatable family, card, and reward interactions that stay clear during mobile use at activities and events."
   - "Keep authenticated data, card balances, orders, product information, and profile states consistent across API-driven screens."
