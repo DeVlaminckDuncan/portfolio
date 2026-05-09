@@ -11,12 +11,12 @@ const visibleProjects = (await getCollection('projects', ({ data }) => data.draf
 
 <BaseLayout
   title="Projects | Duncan De Vlaminck"
-  description="Selected public-safe portfolio project entries for Duncan De Vlaminck, covering ERP systems, mobile delivery, web interfaces, APIs, and AI-assisted workflows."
+  description="Selected portfolio project entries for Duncan De Vlaminck, covering ERP systems, mobile delivery, web interfaces, APIs, and AI-assisted workflows."
 >
   <Section
     heading="Projects"
     headingLevel={1}
-    description="Selected public-safe project entries covering ERP systems, mobile delivery, web interfaces, APIs, and AI-assisted workflows."
+    description="Selected project entries covering ERP systems, mobile delivery, web interfaces, APIs, and AI-assisted workflows."
   >
     {
       visibleProjects.length > 0 ? (
@@ -34,8 +34,8 @@ const visibleProjects = (await getCollection('projects', ({ data }) => data.draf
         <div class="projects-empty" role="status">
           <h2>Project summaries are being prepared.</h2>
           <p>
-            Public-safe project entries will appear here once the first content
-            pass is ready.
+            Project entries will appear here once the first content pass is
+            ready.
           </p>
         </div>
       )
