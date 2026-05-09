@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
+    "audit:accessibility": "bun run build && node scripts/accessibility-audit.mjs",
     "audit:performance": "bun run build && node scripts/performance-audit.mjs",
     "validate:structured-data": "node scripts/validate-json-ld.mjs",
     "check": "astro check",

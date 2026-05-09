@@ -26,6 +26,7 @@ const visibleProjects = (await getCollection('projects', ({ data }) => data.draf
               title={project.data.title}
               description={project.data.description}
               techStack={project.data.techStack}
+              headingLevel={2}
               href={`/projects/${project.id}/`}
             />
           ))}
