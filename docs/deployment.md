@@ -17,6 +17,9 @@ This portfolio deploys to Cloudflare Pages from the GitHub repository
 | Build caching | enabled |
 | Production deployments | enabled |
 | Preview deployments | all non-production branches |
+| Production URL | `https://duncandevlaminck.be` |
+| Additional custom domain | `https://www.duncandevlaminck.be` |
+| Pages hostname | `https://portfolio-a8o.pages.dev` |
 
 The project uses Astro static output. `astro.config.mjs` sets `output: "static"`,
 and `bun run build` writes the deployable site to `dist`. The Cloudflare Pages
@@ -35,9 +38,21 @@ environments:
 | `NODE_VERSION` | `22.16.0` | Pins the Cloudflare Pages build image to the Node 22 runtime line. |
 
 The site does not currently require application secrets, bindings, or runtime
-environment variables. Future work that adds Cloudflare Web Analytics, a custom
-domain, or a contact form backend should document any new deployment settings in
-this file.
+environment variables. Future work that adds Cloudflare Web Analytics or a
+contact form backend should document any new deployment settings in this file.
+
+## Custom Domain
+
+Cloudflare DNS is authoritative for `duncandevlaminck.be`. The Pages project has
+these custom domains attached and active:
+
+| Domain | DNS record | Target | Proxy |
+| :-- | :-- | :-- | :-- |
+| `duncandevlaminck.be` | `CNAME` | `portfolio-a8o.pages.dev` | enabled |
+| `www.duncandevlaminck.be` | `CNAME` | `portfolio-a8o.pages.dev` | enabled |
+
+The apex `TXT` record with `v=spf1 -all` is unrelated to Pages and should stay
+in place unless email policy changes.
 
 ## Verification
 
@@ -49,7 +64,8 @@ bun run build
 ```
 
 After pushing to `main`, verify the latest Cloudflare Pages production
-deployment succeeds and that the production URL returns HTTP 200.
+deployment succeeds and that the production URL and custom domains return HTTP
+200.
 
 ## Troubleshooting
 
