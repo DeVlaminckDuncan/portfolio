@@ -1,15 +1,27 @@
 ---
 import Container from '../components/Container.astro';
+import SEOHead from '../components/SEOHead.astro';
 import '../styles/global.css';
+
+interface SEOImage {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
 
 interface Props {
   title?: string;
   description?: string;
+  ogType?: 'website' | 'article';
+  image?: SEOImage;
 }
 
 const {
   title = 'Duncan De Vlaminck',
   description = 'Personal software engineering portfolio.',
+  ogType,
+  image,
 } = Astro.props;
 
 const navItems = [
@@ -31,10 +43,8 @@ const isCurrentPath = (href: string) =>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
-    <meta name="generator" content={Astro.generator} />
+    <SEOHead title={title} description={description} ogType={ogType} image={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
   </head>
   <body class="site-body">
     <a class="skip-link" href="#main-content">Skip to content</a>
