@@ -2,6 +2,11 @@
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import Section from '../../components/Section.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  createJsonLdGraph,
+  createPersonJsonLd,
+  createProjectCreativeWorkJsonLd,
+} from '../../utils/structuredData';
 
 type Project = CollectionEntry<'projects'>;
 
@@ -35,9 +40,13 @@ const {
 const pageTitle = seoTitle ?? `${title} | Duncan De Vlaminck`;
 const pageDescription = seoDescription ?? description;
 const hasOverview = typeof project.body === 'string' && project.body.trim().length > 0;
+const structuredData = createJsonLdGraph([
+  createPersonJsonLd(Astro.site ?? Astro.url),
+  createProjectCreativeWorkJsonLd(project, Astro.site ?? Astro.url),
+]);
 ---
 
-<BaseLayout title={pageTitle} description={pageDescription}>
+<BaseLayout title={pageTitle} description={pageDescription} structuredData={structuredData}>
   <Section heading={title} headingLevel={1} description={description} class="project-detail-hero">
     <a class="project-detail__back-link" href="/projects/">Back to projects</a>
   </Section>

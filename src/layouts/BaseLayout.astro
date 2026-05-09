@@ -1,6 +1,7 @@
 ---
 import Container from '../components/Container.astro';
 import SEOHead from '../components/SEOHead.astro';
+import type { JsonLdInput } from '../utils/structuredData';
 import '../styles/global.css';
 
 interface SEOImage {
@@ -15,6 +16,7 @@ interface Props {
   description?: string;
   ogType?: 'website' | 'article';
   image?: SEOImage;
+  structuredData?: JsonLdInput;
 }
 
 const {
@@ -22,6 +24,7 @@ const {
   description = 'Personal software engineering portfolio.',
   ogType,
   image,
+  structuredData,
 } = Astro.props;
 
 const navItems = [
@@ -43,7 +46,13 @@ const isCurrentPath = (href: string) =>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <SEOHead title={title} description={description} ogType={ogType} image={image} />
+    <SEOHead
+      title={title}
+      description={description}
+      ogType={ogType}
+      image={image}
+      structuredData={structuredData}
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="site-body">

@@ -3,6 +3,7 @@ import Button from '../components/Button.astro';
 import Section from '../components/Section.astro';
 import { cvFileName, cvHref } from '../data/cv';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { createJsonLdGraph, createPersonJsonLd } from '../utils/structuredData';
 
 const focusAreas = [
   {
@@ -26,11 +27,14 @@ const focusAreas = [
       'Development workflows using ChatGPT, Codex, and OpenCode for structured project setup, implementation, review, and verification.',
   },
 ];
+
+const structuredData = createJsonLdGraph([createPersonJsonLd(Astro.site ?? Astro.url)]);
 ---
 
 <BaseLayout
   title="Duncan De Vlaminck | Software Engineering Portfolio"
   description="Software engineering portfolio focused on ERP systems, FileMaker platforms, web interfaces, AI workflows, and agentic coding."
+  structuredData={structuredData}
 >
   <Section
     heading="Duncan De Vlaminck"

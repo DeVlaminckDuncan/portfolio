@@ -10,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "audit:performance": "bun run build && node scripts/performance-audit.mjs",
+    "validate:structured-data": "node scripts/validate-json-ld.mjs",
     "check": "astro check",
     "check:ci": "biome ci . && astro check",
     "lint": "biome lint .",

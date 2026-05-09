@@ -1,4 +1,7 @@
 ---
+import type { JsonLdInput } from '../utils/structuredData';
+import { serializeJsonLd } from '../utils/structuredData';
+
 interface SEOImage {
   src: string;
   alt: string;
@@ -11,6 +14,7 @@ interface Props {
   description?: string;
   ogType?: 'website' | 'article';
   image?: SEOImage;
+  structuredData?: JsonLdInput;
 }
 
 const siteName = 'Duncan De Vlaminck';
@@ -27,6 +31,7 @@ const {
   description = defaultDescription,
   ogType = 'website',
   image = defaultImage,
+  structuredData,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? Astro.url;
@@ -57,3 +62,9 @@ const imageUrl = new URL(image.src, siteUrl);
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageUrl} />
 <meta name="twitter:image:alt" content={image.alt} />
+
+{
+  structuredData && (
+    <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />
+  )
+}
