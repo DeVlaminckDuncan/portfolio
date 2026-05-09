@@ -73,6 +73,13 @@ Run commands from the repository root:
 | `bun run build`             | Type-check and build the static site                    |
 | `bun run preview`           | Preview the built site locally                          |
 
+## Deployment
+
+The site deploys from `main` to Cloudflare Pages as a static Astro build. The
+Pages project uses `bun run build` as the build command and `dist` as the build
+output directory. Deployment settings and verification steps are documented in
+[`docs/deployment.md`](docs/deployment.md).
+
 ## Architecture Notes
 
 - Static output is configured explicitly in `astro.config.mjs`.

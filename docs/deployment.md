@@ -1,0 +1,67 @@
+# Deployment
+
+This portfolio deploys to Cloudflare Pages from the GitHub repository
+`DeVlaminckDuncan/portfolio`.
+
+## Cloudflare Pages Project
+
+| Setting | Value |
+| :-- | :-- |
+| Project name | `portfolio` |
+| Git provider | GitHub |
+| Repository | `DeVlaminckDuncan/portfolio` |
+| Production branch | `main` |
+| Build command | `bun run build` |
+| Build output directory | `dist` |
+| Root directory | repository root |
+| Build caching | enabled |
+| Production deployments | enabled |
+| Preview deployments | all non-production branches |
+
+The project uses Astro static output. `astro.config.mjs` sets `output: "static"`,
+and `bun run build` writes the deployable site to `dist`.
+
+## Build Environment
+
+Configure these variables in both the production and preview Pages
+environments:
+
+| Variable | Value | Purpose |
+| :-- | :-- | :-- |
+| `BUN_VERSION` | `1.3.9` | Matches the repository `packageManager` setting. |
+| `NODE_VERSION` | `22.16.0` | Pins the Cloudflare Pages build image to the Node 22 runtime line. |
+
+The site does not currently require application secrets, bindings, or runtime
+environment variables. Future work that adds Cloudflare Web Analytics, a custom
+domain, or a contact form backend should document any new deployment settings in
+this file.
+
+## Verification
+
+Before pushing deployment changes, run:
+
+```sh
+bun run check:ci
+bun run build
+```
+
+After pushing to `main`, verify the latest Cloudflare Pages production
+deployment succeeds and that the production URL returns HTTP 200.
+
+## Troubleshooting
+
+- If Cloudflare cannot connect to the repository, reinstall or update the
+  Cloudflare Workers & Pages GitHub App and grant access to
+  `DeVlaminckDuncan/portfolio`.
+- If dependency installation uses an unexpected package manager or version,
+  confirm `BUN_VERSION` is set in both production and preview environments.
+- If the build succeeds locally but fails on Pages, compare the Pages build log
+  against `bun run build` output and confirm the build output directory remains
+  `dist`.
+
+## References
+
+- [Cloudflare Pages Astro guide](https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/)
+- [Cloudflare Pages build configuration](https://developers.cloudflare.com/pages/configuration/build-configuration/)
+- [Cloudflare Pages build image](https://developers.cloudflare.com/pages/configuration/build-image/)
+- [Cloudflare Pages GitHub integration](https://developers.cloudflare.com/pages/configuration/git-integration/github-integration/)
