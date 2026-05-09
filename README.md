@@ -76,9 +76,9 @@ Run commands from the repository root:
 ## Deployment
 
 The site deploys from `main` to Cloudflare Pages as a static Astro build. The
-Pages project uses `bun run build` as the build command and `dist` as the build
-output directory. Deployment settings and verification steps are documented in
-[`docs/deployment.md`](docs/deployment.md).
+Pages project uses `bun install --frozen-lockfile && bun run build` as the build
+command and `dist` as the build output directory. Deployment settings and
+verification steps are documented in [`docs/deployment.md`](docs/deployment.md).
 
 ## Architecture Notes
 

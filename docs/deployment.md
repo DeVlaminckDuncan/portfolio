@@ -11,7 +11,7 @@ This portfolio deploys to Cloudflare Pages from the GitHub repository
 | Git provider | GitHub |
 | Repository | `DeVlaminckDuncan/portfolio` |
 | Production branch | `main` |
-| Build command | `bun run build` |
+| Build command | `bun install --frozen-lockfile && bun run build` |
 | Build output directory | `dist` |
 | Root directory | repository root |
 | Build caching | enabled |
@@ -19,7 +19,10 @@ This portfolio deploys to Cloudflare Pages from the GitHub repository
 | Preview deployments | all non-production branches |
 
 The project uses Astro static output. `astro.config.mjs` sets `output: "static"`,
-and `bun run build` writes the deployable site to `dist`.
+and `bun run build` writes the deployable site to `dist`. The Cloudflare Pages
+build command installs dependencies explicitly before running the repository
+build script because Pages does not expose a separate install-command field in
+the project API.
 
 ## Build Environment
 
@@ -54,7 +57,8 @@ deployment succeeds and that the production URL returns HTTP 200.
   Cloudflare Workers & Pages GitHub App and grant access to
   `DeVlaminckDuncan/portfolio`.
 - If dependency installation uses an unexpected package manager or version,
-  confirm `BUN_VERSION` is set in both production and preview environments.
+  confirm `BUN_VERSION` is set in both production and preview environments and
+  that the build command still starts with `bun install --frozen-lockfile`.
 - If the build succeeds locally but fails on Pages, compare the Pages build log
   against `bun run build` output and confirm the build output directory remains
   `dist`.
