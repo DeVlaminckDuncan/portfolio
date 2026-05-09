@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
+    "audit:performance": "bun run build && node scripts/performance-audit.mjs",
     "check": "astro check",
     "check:ci": "biome ci . && astro check",
     "lint": "biome lint .",
@@ -23,6 +24,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@biomejs/biome": "2.4.13",
+    "chrome-launcher": "1.2.1",
+    "lighthouse": "13.3.0",
     "typescript": "^6.0.3"
   }
 }

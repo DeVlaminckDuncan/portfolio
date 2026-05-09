@@ -60,17 +60,18 @@ in `src/styles/`, and future structured content can live in `src/content/`.
 
 Run commands from the repository root:
 
-| Command                | Action                                      |
-| :--------------------- | :------------------------------------------ |
-| `bun install`          | Install dependencies                        |
-| `bun run dev`          | Start the local Astro development server    |
-| `bun run check`        | Type-check Astro and TypeScript files       |
-| `bun run lint`         | Lint the project with Biome                 |
-| `bun run format`       | Format the project with Biome               |
-| `bun run format:check` | Check Biome formatting without writing      |
-| `bun run check:ci`     | Run Biome CI checks and Astro type checks   |
-| `bun run build`        | Type-check and build the static site        |
-| `bun run preview`      | Preview the built site locally              |
+| Command                     | Action                                                  |
+| :-------------------------- | :------------------------------------------------------ |
+| `bun install`               | Install dependencies                                    |
+| `bun run dev`               | Start the local Astro development server                |
+| `bun run audit:performance` | Build the site and run Lighthouse performance audits    |
+| `bun run check`             | Type-check Astro and TypeScript files                   |
+| `bun run lint`              | Lint the project with Biome                             |
+| `bun run format`            | Format the project with Biome                           |
+| `bun run format:check`      | Check Biome formatting without writing                  |
+| `bun run check:ci`          | Run Biome CI checks and Astro type checks               |
+| `bun run build`             | Type-check and build the static site                    |
+| `bun run preview`           | Preview the built site locally                          |
 
 ## Architecture Notes
 
