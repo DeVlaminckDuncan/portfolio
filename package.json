@@ -11,6 +11,10 @@
     "build": "astro check && astro build",
     "audit:accessibility": "bun run build && node scripts/accessibility-audit.mjs",
     "audit:performance": "bun run build && node scripts/performance-audit.mjs",
+    "install:cross-browser": "playwright install chromium firefox webkit",
+    "install:cross-browser:ci": "playwright install --with-deps chromium firefox webkit",
+    "test:cross-browser": "bun run build && playwright test",
+    "test:cross-browser:ci": "playwright test",
     "validate:structured-data": "node scripts/validate-json-ld.mjs",
     "check": "astro check",
     "check:ci": "biome ci . && astro check",
@@ -27,6 +31,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@biomejs/biome": "2.4.13",
+    "@playwright/test": "^1.59.1",
     "chrome-launcher": "1.2.1",
     "lighthouse": "13.3.0",
     "typescript": "^6.0.3"

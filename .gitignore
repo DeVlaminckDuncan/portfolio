@@ -16,6 +16,8 @@ bun-debug.log*
 
 # generated performance reports
 .lighthouse/
+playwright-report/
+test-results/
 
 # local env files
 .env.local
