@@ -37,9 +37,21 @@ environments:
 | `BUN_VERSION` | `1.3.9` | Matches the repository `packageManager` setting. |
 | `NODE_VERSION` | `22.16.0` | Pins the Cloudflare Pages build image to the Node 22 runtime line. |
 
-The site does not currently require application secrets, bindings, or runtime
-environment variables. Future work that adds Cloudflare Web Analytics or a
-contact form backend should document any new deployment settings in this file.
+Configure this variable only in the production Pages environment:
+
+| Variable | Value | Purpose |
+| :-- | :-- | :-- |
+| `PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN` | Cloudflare Web Analytics site token | Enables the Cloudflare Web Analytics beacon in production builds. |
+
+Do not configure `PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN` in local development or
+preview deployments unless tracking scope changes in a future issue. The shared
+Astro layout only renders the analytics script when this token is present, which
+keeps local builds, preview deployments, and the default performance audit free
+of client-side analytics JavaScript.
+
+Keep Cloudflare Pages Web Analytics auto-injection disabled for this project.
+Analytics is integrated through repository markup so the tracking behavior stays
+explicit and duplicate beacons are avoided.
 
 ## Custom Domain
 
@@ -63,9 +75,30 @@ bun run check:ci
 bun run build
 ```
 
+For analytics changes, also verify both build modes from the repository root:
+
+```sh
+bun run build
+rg "static.cloudflareinsights.com" dist
+```
+
+The `rg` command must return no matches when
+`PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN` is unset.
+
+```sh
+PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN=<production token> bun run build
+rg "static.cloudflareinsights.com" dist
+```
+
+The `rg` command must return matches in generated HTML when the production token
+is set.
+
 After pushing to `main`, verify the latest Cloudflare Pages production
 deployment succeeds and that the production URL and custom domains return HTTP
-200.
+200. Then confirm `https://duncandevlaminck.be` HTML includes
+`https://static.cloudflareinsights.com/beacon.min.js`, visit the production site
+once, and confirm recent traffic appears in Cloudflare Web Analytics after the
+data has had a few minutes to ingest.
 
 ## Troubleshooting
 

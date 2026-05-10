@@ -8,7 +8,7 @@ site has a base layout, global styles, a starter landing page, and validation
 tooling that future portfolio sections can build on.
 
 Future issues can add portfolio sections, project detail pages, SEO,
-accessibility refinements, analytics, and deployment setup.
+accessibility refinements, and deployment improvements.
 
 ## Tech Stack
 
@@ -85,8 +85,10 @@ verification steps are documented in [`docs/deployment.md`](docs/deployment.md).
 - Static output is configured explicitly in `astro.config.mjs`.
 - TypeScript uses Astro's strict configuration.
 - Visual foundations are documented in [`docs/design-system.md`](docs/design-system.md).
-- The repository currently has no blog, CMS, backend, authentication, analytics,
-  or deployment adapter.
+- The repository currently has no blog, CMS, backend, authentication, or
+  deployment adapter. Cloudflare Web Analytics is available as a
+  production-only build-time integration when the Pages environment provides its
+  public token.
 - Documentation should stay useful for both humans and coding agents. If an
   agent workflow document such as `AGENTS.md` is added later, link it from this
   README.
