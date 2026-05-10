@@ -7,6 +7,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const visibleProjects = (await getCollection('projects', ({ data }) => data.draft !== true)).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+if (visibleProjects.length === 0) {
+  throw new Error('Projects page requires at least one published project entry.');
+}
 ---
 
 <BaseLayout
@@ -18,29 +22,19 @@ const visibleProjects = (await getCollection('projects', ({ data }) => data.draf
     headingLevel={1}
     description="Selected project entries covering ERP systems, mobile delivery, web interfaces, APIs, and AI-assisted workflows."
   >
-    {
-      visibleProjects.length > 0 ? (
-        <div class="projects-grid">
-          {visibleProjects.map((project) => (
-            <ProjectCard
-              title={project.data.title}
-              description={project.data.description}
-              techStack={project.data.techStack}
-              headingLevel={2}
-              href={`/projects/${project.id}/`}
-            />
-          ))}
-        </div>
-      ) : (
-        <div class="projects-empty" role="status">
-          <h2>Project summaries are being prepared.</h2>
-          <p>
-            Project entries will appear here once the first content pass is
-            ready.
-          </p>
-        </div>
-      )
-    }
+    <div class="projects-grid">
+      {
+        visibleProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            techStack={project.data.techStack}
+            headingLevel={2}
+            href={`/projects/${project.id}/`}
+          />
+        ))
+      }
+    </div>
   </Section>
 </BaseLayout>
 
@@ -53,25 +47,6 @@ const visibleProjects = (await getCollection('projects', ({ data }) => data.draf
 
   .projects-grid :global(.project-card) {
     min-height: 100%;
-  }
-
-  .projects-empty {
-    display: grid;
-    max-width: var(--container-readable);
-    gap: var(--space-3);
-    border: 1px dashed var(--color-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-surface);
-    padding: var(--space-6);
-  }
-
-  .projects-empty h2 {
-    margin: 0;
-    font-size: var(--font-size-xl);
-  }
-
-  .projects-empty p {
-    margin: 0;
   }
 
   @media (max-width: 48rem) {
