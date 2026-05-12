@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, type Locator, type Page, test } from "@playwright/test";
 
 const staticRoutes = ["/", "/about/", "/projects/", "/contact/"] as const;
 const cvHref = "/cv/CV-Duncan-De-Vlaminck-EN.pdf";
@@ -38,6 +38,17 @@ const expectHealthyPage = async (page: Page, path: string) => {
 
   expect(hasHorizontalOverflow, `${path} should not overflow horizontally`).toBe(false);
   expect(clientErrors, `${path} should not emit console or page errors`).toEqual([]);
+};
+
+const clickLocatorCenter = async (page: Page, locator: Locator) => {
+  const box = await locator.boundingBox();
+  expect(box).not.toBeNull();
+
+  if (!box) {
+    throw new Error("Expected locator to have a clickable bounding box.");
+  }
+
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
 };
 
 test.describe("portfolio route health", () => {
@@ -118,6 +129,25 @@ test.describe("portfolio user flows", () => {
     await page.getByRole("link", { name: "Back to projects" }).click();
     await expect(page).toHaveURL(/\/projects\/$/);
     await expect(page.getByRole("heading", { level: 1, name: "Projects" })).toBeVisible();
+  });
+
+  test("project card body and technology labels open detail pages", async ({ page }) => {
+    await page.goto("/projects/");
+
+    const firstCard = page.locator(".project-card").first();
+    const projectHref = await firstCard.locator(".project-card__title a").getAttribute("href");
+    expect(projectHref).toMatch(/^\/projects\/[^/]+\/$/);
+
+    await clickLocatorCenter(page, firstCard.locator(".project-card__description"));
+    await expect(page).toHaveURL(new RegExp(`${projectHref?.replaceAll("/", "\\/")}$`));
+
+    await page.goto("/projects/");
+
+    await clickLocatorCenter(
+      page,
+      page.locator(".project-card").first().locator(".project-card__tech-list li").first(),
+    );
+    await expect(page).toHaveURL(new RegExp(`${projectHref?.replaceAll("/", "\\/")}$`));
   });
 
   test("contact links expose email, LinkedIn, and CV actions", async ({ page }) => {
