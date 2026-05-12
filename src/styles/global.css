@@ -1,5 +1,14 @@
 :root {
   color-scheme: light;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    scroll-behavior: smooth;
+  }
+}
+
+:root {
 
   --color-page: #f7f8fa;
   --color-surface: #ffffff;
