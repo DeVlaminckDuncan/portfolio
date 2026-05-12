@@ -20,7 +20,12 @@ const {
   ...rest
 } = Astro.props as Props;
 
-const safeRel = target === '_blank' && rel === undefined ? 'noopener noreferrer' : rel;
+const safeRel =
+  target === '_blank'
+    ? [...new Set([...(rel?.split(/\s+/) ?? []), 'noopener', 'noreferrer'])]
+        .filter(Boolean)
+        .join(' ')
+    : rel;
 ---
 
 <a
