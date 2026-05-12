@@ -48,7 +48,9 @@ const structuredData = createJsonLdGraph([
 
 <BaseLayout title={pageTitle} description={pageDescription} structuredData={structuredData}>
   <Section heading={title} headingLevel={1} description={description} class="project-detail-hero">
-    <a class="project-detail__back-link" href="/projects/">Back to projects</a>
+    <a class="project-detail__back-link" href="/projects/" data-astro-prefetch>
+      Back to projects
+    </a>
   </Section>
 
   {

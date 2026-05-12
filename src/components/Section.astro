@@ -17,11 +17,14 @@ const {
   class: className,
 } = Astro.props as Props;
 
-const slug = heading
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, '-')
-  .replace(/^-|-$/g, '');
-const headingId = id ?? `${slug || 'section'}-heading`;
+const headingId =
+  id ??
+  `${
+    heading
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '') || 'section'
+  }-heading`;
 const Heading = `h${headingLevel}` as 'h1' | 'h2' | 'h3';
 ---
 

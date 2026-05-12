@@ -25,7 +25,9 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
     <Heading class="project-card__title">
       {
         href ? (
-          <a href={href}>{title}</a>
+          <a href={href} data-astro-prefetch>
+            {title}
+          </a>
         ) : (
           title
         )
