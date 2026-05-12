@@ -38,6 +38,9 @@ jobs:
       - name: Build site
         run: bun run build
 
+      - name: Run performance budget audit
+        run: bun run audit:performance:ci
+
       - name: Run cross-browser smoke tests
         run: bun run test:cross-browser:ci
 

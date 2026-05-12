@@ -29,6 +29,17 @@ The command builds the site, starts `astro preview`, audits every generated
 `dist/**/index.html` route with Lighthouse, and writes JSON reports to
 `.lighthouse/`.
 
+CI runs the same budget audit against the `dist/` directory created by the
+earlier build step:
+
+```sh
+bun run audit:performance:ci
+```
+
+Use this CI-only variant only after `bun run build` has already produced
+`dist/`. It skips the extra build while preserving the same route discovery,
+Lighthouse threshold, zero-JavaScript guardrail, and report output.
+
 The default audit runs without the production analytics token. It fails when:
 
 - any route has a Lighthouse performance score below 90;

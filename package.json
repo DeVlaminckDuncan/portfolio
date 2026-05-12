@@ -11,6 +11,7 @@
     "build": "astro check && astro build",
     "audit:accessibility": "bun run build && node scripts/accessibility-audit.mjs",
     "audit:performance": "bun run build && node scripts/performance-audit.mjs",
+    "audit:performance:ci": "node scripts/performance-audit.mjs",
     "install:cross-browser": "playwright install chromium firefox webkit",
     "install:cross-browser:ci": "playwright install --with-deps chromium firefox webkit",
     "test:cross-browser": "bun run build && playwright test",

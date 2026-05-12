@@ -77,6 +77,7 @@ Run commands from the repository root:
 | `bun run test:cross-browser`     | Build and run the Playwright cross-browser smoke gate |
 | `bun run audit:accessibility`    | Build and run Lighthouse accessibility audits        |
 | `bun run audit:performance`      | Build and run Lighthouse performance audits          |
+| `bun run audit:performance:ci`   | Run the performance audit against an existing build  |
 | `bun run preview`                | Preview the built site locally                       |
 
 ## Deployment
