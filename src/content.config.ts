@@ -20,7 +20,6 @@ const projects = defineCollection({
         z.object({
           label: z.string(),
           href: z
-            .string()
             .url()
             .refine(
               (url) =>
