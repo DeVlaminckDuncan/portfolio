@@ -19,10 +19,14 @@ const projects = defineCollection({
       .array(
         z.object({
           label: z.string(),
-          href: z.string().url().refine(
-            (url) => url.toLowerCase().startsWith('http://') || url.toLowerCase().startsWith('https://'),
-            { message: "URL must use http or https protocol" }
-          ),
+          href: z
+            .string()
+            .url()
+            .refine(
+              (url) =>
+                url.toLowerCase().startsWith("http://") || url.toLowerCase().startsWith("https://"),
+              { message: "URL must use http or https protocol" },
+            ),
         }),
       )
       .optional(),
