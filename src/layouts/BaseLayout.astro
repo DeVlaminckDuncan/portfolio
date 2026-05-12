@@ -56,6 +56,11 @@ const isCurrentPath = (href: string) =>
       structuredData={structuredData}
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {
+      cloudflareWebAnalyticsToken && (
+        <link rel="preconnect" href="https://static.cloudflareinsights.com" />
+      )
+    }
   </head>
   <body class="site-body">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -73,6 +78,7 @@ const isCurrentPath = (href: string) =>
                 <a
                   href={item.href}
                   aria-current={isCurrentPath(item.href) ? 'page' : undefined}
+                  data-astro-prefetch
                 >
                   {item.label}
                 </a>

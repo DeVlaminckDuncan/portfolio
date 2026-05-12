@@ -70,7 +70,6 @@ body {
   color: var(--color-text);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
-  text-rendering: optimizeLegibility;
 }
 
 img,

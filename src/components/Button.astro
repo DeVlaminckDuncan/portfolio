@@ -17,6 +17,7 @@ const {
   download,
   ariaLabel,
   class: className,
+  ...rest
 } = Astro.props as Props;
 
 const safeRel = target === '_blank' && rel === undefined ? 'noopener noreferrer' : rel;
@@ -29,6 +30,7 @@ const safeRel = target === '_blank' && rel === undefined ? 'noopener noreferrer'
   rel={safeRel}
   download={download}
   aria-label={ariaLabel}
+  {...rest}
 >
   <slot />
 </a>
