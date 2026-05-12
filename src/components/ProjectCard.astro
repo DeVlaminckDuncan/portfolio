@@ -48,6 +48,7 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
 <style>
   .project-card {
     position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
@@ -81,6 +82,17 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
     content: '';
     position: absolute;
     inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+
+  .project-card__title a:focus-visible {
+    outline: none;
+  }
+
+  .project-card__title a:focus-visible::after {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
   }
 
   .project-card__title a:hover {
@@ -92,8 +104,6 @@ const Heading = `h${headingLevel}` as 'h2' | 'h3';
   }
 
   .project-card__tech-list {
-    position: relative;
-    z-index: 1;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
