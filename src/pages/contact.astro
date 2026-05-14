@@ -42,7 +42,9 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
           </p>
         </div>
 
-        <Button href={emailHref}>Email Duncan</Button>
+        <Button href={emailHref} class="contact-card__button">
+          Email Duncan
+        </Button>
       </article>
 
       <article class="contact-card">
@@ -55,7 +57,12 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
           </p>
         </div>
 
-        <Button href={linkedInHref} variant="secondary" target="_blank">
+        <Button
+          href={linkedInHref}
+          variant="secondary"
+          target="_blank"
+          class="contact-card__button"
+        >
           View LinkedIn
         </Button>
       </article>
@@ -70,7 +77,12 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
           </p>
         </div>
 
-        <Button href={cvHref} variant="secondary" download={cvFileName}>
+        <Button
+          href={cvHref}
+          variant="secondary"
+          download={cvFileName}
+          class="contact-card__button"
+        >
           Download CV
         </Button>
       </article>
@@ -114,12 +126,19 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
   }
 
   .contact-card {
+    position: relative;
+    isolation: isolate;
     display: flex;
     min-height: 100%;
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-6);
+    transition: border-color 160ms ease;
+  }
+
+  .contact-card:hover {
+    border-color: var(--color-accent);
   }
 
   .contact-card__content {
@@ -143,6 +162,28 @@ const linkedInHref = 'https://www.linkedin.com/in/duncandv';
   .contact-card p,
   .form-status p {
     margin-block-end: 0;
+  }
+
+  .contact-card__button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .contact-card__button:focus-visible {
+    outline: none;
+  }
+
+  .contact-card__button:focus-visible::after {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: var(--radius-lg);
+  }
+
+  .contact-card :global(.text-link) {
+    position: relative;
+    z-index: 2;
   }
 
   .form-status {
