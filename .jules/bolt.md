@@ -1,13 +1,9 @@
 # Bolt's Journal
 
-## 2025-05-15 - Initial Performance Review
-**Learning:** Found that even with zero client-side JavaScript, the homepage has a Total Blocking Time (TBT) of 290ms. This is likely due to CSS-heavy layout or specific CSS properties like `text-rendering: optimizeLegibility` affecting the main thread during initial render.
-**Action:** Remove `text-rendering: optimizeLegibility` as it's a known performance bottleneck for minimal gains in modern browsers.
-
-## 2025-05-15 - Astro Navigation
-**Learning:** The portfolio uses standard `<a>` tags for navigation. In Astro, we can use `data-astro-prefetch` to significantly improve perceived performance by pre-loading pages when a user hovers over or focuses on a link.
-**Action:** Implement prefetching on core navigation links.
-
-## 2026-05-14 - Cloudflare Analytics Preconnection
+## 2025-05-15 - Cloudflare Analytics Preconnection
 **Learning:** Cloudflare Web Analytics uses two domains: 'static.cloudflareinsights.com' for the beacon script and 'cloudflareinsights.com' for data collection. Providing preconnect hints for BOTH ensures the connection to the collection endpoint is established early, reducing the impact on the main thread during the reporting phase.
 **Action:** Always include both preconnect hints when configuring the Cloudflare Web Analytics beacon.
+
+## 2026-05-15 - Astro Prefetch and JavaScript Byte Limit
+**Learning:** Adding 'data-astro-prefetch' to links in an Astro project with 'output: static' and no other JavaScript can trigger Astro to inject its prefetch client-side script. This violates a strict zero-JavaScript performance audit. While prefetching improves perceived performance, it has a measurable cost in JavaScript bytes.
+**Action:** Avoid 'data-astro-prefetch' in environments with a zero-JavaScript budget unless the audit is adjusted to allow the minimal Astro prefetch script.

@@ -17,7 +17,6 @@ const projectRoot = process.cwd();
 const distDir = join(projectRoot, "dist");
 const reportsDir = join(projectRoot, ".lighthouse");
 const performanceThreshold = 90;
-const scriptTransferSizeThreshold = 1_500;
 const host = "127.0.0.1";
 const bunCommand = "bun";
 
@@ -268,9 +267,9 @@ const main = async () => {
         );
       }
 
-      if (result.scriptTransferSize > scriptTransferSizeThreshold) {
+      if (result.scriptTransferSize > 0) {
         routeFailures.push(
-          `${result.route} transferred ${result.scriptTransferSize} bytes of client-side JavaScript, above the ${scriptTransferSizeThreshold}-byte runtime budget.`,
+          `${result.route} transferred ${result.scriptTransferSize} bytes of client-side JavaScript.`,
         );
       }
 
