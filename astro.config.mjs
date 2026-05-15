@@ -6,5 +6,9 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://duncandevlaminck.be",
   output: "static",
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: "hover",
+  },
   integrations: [sitemap()],
 });

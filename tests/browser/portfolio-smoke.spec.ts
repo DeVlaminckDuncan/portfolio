@@ -84,6 +84,33 @@ test.describe("portfolio route health", () => {
 });
 
 test.describe("portfolio user flows", () => {
+  test("marked internal links have an emitted Astro prefetch runtime", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.locator("a[data-astro-prefetch]")).not.toHaveCount(0);
+
+    const moduleScriptBodies = await page.evaluate(async () => {
+      const scriptSources = Array.from(
+        document.querySelectorAll<HTMLScriptElement>('script[type="module"][src]'),
+        (script) => script.src,
+      );
+
+      return Promise.all(
+        scriptSources.map(async (scriptSource) => {
+          const response = await fetch(scriptSource);
+          return response.ok ? response.text() : "";
+        }),
+      );
+    });
+
+    expect(
+      moduleScriptBodies.some(
+        (scriptBody) =>
+          scriptBody.includes("astroPrefetch") && scriptBody.includes('rel="prefetch"'),
+      ),
+    ).toBe(true);
+  });
+
   test("primary navigation reaches the main site sections", async ({ page }) => {
     await page.goto("/");
 
