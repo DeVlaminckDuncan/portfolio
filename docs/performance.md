@@ -1,10 +1,10 @@
 # Performance
 
-This portfolio is intentionally static-first. Local and preview builds have no
-client-side JavaScript, no raster images, and only a small shared stylesheet in
-the generated build. Production builds may include the approved Cloudflare Web
-Analytics beacon when `PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN` is configured in
-Cloudflare Pages.
+This portfolio is intentionally static-first. Local and preview builds keep
+client-side JavaScript limited to Astro's small navigation prefetch runtime, use
+no raster images, and only include a small shared stylesheet in the generated
+build. Production builds may include the approved Cloudflare Web Analytics beacon
+when `PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN` is configured in Cloudflare Pages.
 
 ## Baseline
 
@@ -38,12 +38,12 @@ bun run audit:performance:ci
 
 Use this CI-only variant only after `bun run build` has already produced
 `dist/`. It skips the extra build while preserving the same route discovery,
-Lighthouse threshold, zero-JavaScript guardrail, and report output.
+Lighthouse threshold, approved runtime byte budget, and report output.
 
 The default audit runs without the production analytics token. It fails when:
 
 - any route has a Lighthouse performance score below 90;
-- any route transfers client-side JavaScript bytes.
+- any route transfers more than 1.5 KiB of client-side JavaScript.
 
 Lighthouse requires a local Chrome or Chromium browser. If the command cannot
 find a browser, install Chrome/Chromium locally and rerun the audit.
@@ -52,13 +52,14 @@ find a browser, install Chrome/Chromium locally and rerun the audit.
 
 Keep Astro's low-JavaScript advantage. Do not add client-side JavaScript,
 animation libraries, analytics scripts, or interactive islands unless the value
-is explicit and the audit still passes.
+is explicit and the audit still passes. The approved default JavaScript budget is
+reserved for Astro's navigation prefetch runtime.
 
 Cloudflare Web Analytics is the approved production-only exception. The shared
 Astro layout renders the official Cloudflare beacon only when
 `PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN` is present. Leave that variable unset
 for local development, preview deployments, and static audit runs so the
-zero-JavaScript guardrail remains effective by default.
+runtime budget remains focused on the Astro prefetch script by default.
 
 There are currently no raster images in the site. Future local raster images
 should use Astro image tooling where appropriate:
