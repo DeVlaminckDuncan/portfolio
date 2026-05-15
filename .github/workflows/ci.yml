@@ -32,6 +32,9 @@ jobs:
       - name: Install cross-browser test browsers
         run: bun run install:cross-browser:ci
 
+      - name: Check case-sensitive paths
+        run: bun run check:case-paths
+
       - name: Run checks
         run: bun run check:ci
 

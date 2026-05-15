@@ -17,6 +17,7 @@
     "test:cross-browser": "bun run build && playwright test",
     "test:cross-browser:ci": "playwright test",
     "validate:structured-data": "node scripts/validate-json-ld.mjs",
+    "check:case-paths": "node scripts/check-case-collisions.mjs",
     "check": "astro check",
     "check:ci": "biome ci . && astro check",
     "lint": "biome lint .",
