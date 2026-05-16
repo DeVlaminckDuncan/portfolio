@@ -78,6 +78,8 @@ body {
   color: var(--color-text);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
+  /* Use optimizeSpeed to prevent TBT issues from optimizeLegibility defaults on large text */
+  text-rendering: optimizeSpeed;
 }
 
 img,

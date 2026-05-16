@@ -11,3 +11,7 @@
 ## 2026-05-14 - Cloudflare Analytics Preconnection
 **Learning:** Cloudflare Web Analytics uses two domains: 'static.cloudflareinsights.com' for the beacon script and 'cloudflareinsights.com' for data collection. Providing preconnect hints for BOTH ensures the connection to the collection endpoint is established early, reducing the impact on the main thread during the reporting phase.
 **Action:** Always include both preconnect hints when configuring the Cloudflare Web Analytics beacon.
+
+## 2026-05-16 - CSS and Transition Optimizations
+**Learning:** Using 'text-rendering: optimizeSpeed' on the body prevents the browser from defaulting to 'optimizeLegibility' for headers, which can be a bottleneck for TBT. Additionally, 'data-astro-prefetch="viewport"' on the primary CTA makes the most likely next navigation feel instantaneous.
+**Action:** Apply 'optimizeSpeed' globally and use viewport prefetching for the main CTA.
