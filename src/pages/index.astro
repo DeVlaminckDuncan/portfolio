@@ -49,7 +49,7 @@ const structuredData = createJsonLdGraph([createPersonJsonLd(Astro.site ?? Astro
     </p>
 
     <div class="hero__actions">
-      <Button href="/projects/" data-astro-prefetch>View projects</Button>
+      <Button href="/projects/" data-astro-prefetch="viewport">View projects</Button>
       <Button href={cvHref} variant="secondary" download={cvFileName}>
         Download CV
       </Button>

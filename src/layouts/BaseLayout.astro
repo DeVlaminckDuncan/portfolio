@@ -59,8 +59,8 @@ const isCurrentPath = (href: string) =>
     {
       cloudflareWebAnalyticsToken && (
         <>
-          <link rel="preconnect" href="https://static.cloudflareinsights.com" />
-          <link rel="preconnect" href="https://cloudflareinsights.com" />
+          <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin />
+          <link rel="preconnect" href="https://cloudflareinsights.com" crossorigin />
         </>
       )
     }
