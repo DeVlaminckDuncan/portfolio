@@ -63,22 +63,22 @@ in `src/styles/`, and structured project content lives in `src/content/`.
 
 Run commands from the repository root:
 
-| Command                     | Action                                                  |
-| :-------------------------- | :------------------------------------------------------ |
-| `bun install`               | Install dependencies                                    |
-| `bun run dev`               | Start the local Astro development server                |
-| `bun run check`                  | Type-check Astro and TypeScript files                |
-| `bun run lint`                   | Lint the project with Biome                          |
-| `bun run format`                 | Format the project with Biome                        |
-| `bun run format:check`           | Check Biome formatting without writing               |
-| `bun run check:ci`               | Run Biome CI checks and Astro type checks            |
-| `bun run build`                  | Type-check and build the static site                 |
-| `bun run validate:structured-data` | Validate JSON-LD in generated HTML                  |
-| `bun run test:cross-browser`     | Build and run the Playwright cross-browser smoke gate |
-| `bun run audit:accessibility`    | Build and run Lighthouse accessibility audits        |
-| `bun run audit:performance`      | Build and run Lighthouse performance audits          |
-| `bun run audit:performance:ci`   | Run the performance audit against an existing build  |
-| `bun run preview`                | Preview the built site locally                       |
+| Command                            | Action                                                |
+|:---------------------------------- |:------------------------------------------------------|
+| `bun install`                      | Install dependencies                                  |
+| `bun run dev`                      | Start the local Astro development server              |
+| `bun run check`                    | Type-check Astro and TypeScript files                 |
+| `bun run lint`                     | Lint the project with Biome                           |
+| `bun run format`                   | Format the project with Biome                         |
+| `bun run format:check`             | Check Biome formatting without writing                |
+| `bun run check:ci`                 | Run Biome CI checks and Astro type checks             |
+| `bun run build`                    | Type-check and build the static site                  |
+| `bun run validate:structured-data` | Validate JSON-LD in generated HTML                    |
+| `bun run test:cross-browser`       | Build and run the Playwright cross-browser smoke gate |
+| `bun run audit:accessibility`      | Build and run Lighthouse accessibility audits         |
+| `bun run audit:performance`        | Build and run Lighthouse performance audits           |
+| `bun run audit:performance:ci`     | Run the performance audit against an existing build   |
+| `bun run preview`                  | Preview the built site locally                        |
 
 ## Deployment
 

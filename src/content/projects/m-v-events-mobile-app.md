@@ -27,7 +27,7 @@ links:
   - label: "Google Play"
     href: "https://play.google.com/store/apps/details?id=be.mvsportevents.app.staging"
   - label: "Apple App Store"
-    href: "https://apps.apple.com/us/app/m-v-events/id1643515246"
+    href: "https://apps.apple.com/be/app/m-v-events/id1643515246"
 seoTitle: "M&V Events Mobile App | Duncan De Vlaminck"
 seoDescription: "React Native and Expo mobile app work for M&V Events, focused on digital family savings cards, QR point collection, rewards, authenticated flows, and app-store release."
 ---
