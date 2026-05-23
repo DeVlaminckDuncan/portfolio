@@ -175,8 +175,45 @@ const readAuditResult = (route, reportPath) => {
     scriptTransferSize,
     fcp: report.audits["first-contentful-paint"]?.displayValue ?? "n/a",
     lcp: report.audits["largest-contentful-paint"]?.displayValue ?? "n/a",
+    speedIndex: report.audits["speed-index"]?.displayValue ?? "n/a",
+    tbt: report.audits["total-blocking-time"]?.displayValue ?? "n/a",
+    cls: report.audits["cumulative-layout-shift"]?.displayValue ?? "n/a",
     totalByteWeight: report.audits["total-byte-weight"]?.displayValue ?? "n/a",
   };
+};
+
+const warmUpLighthouse = async (origin) => {
+  const url = new URL("/", `${origin}/`).href;
+  const profileDir = join(reportsDir, "chrome-profiles", "warm-up");
+
+  console.log("Warming up Lighthouse");
+  mkdirSync(profileDir, { recursive: true });
+
+  const chrome = await launch({
+    chromeFlags: ["--headless", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
+    logLevel: "silent",
+    userDataDir: profileDir,
+  });
+
+  try {
+    const result = await withTimeout(
+      lighthouse(url, {
+        logLevel: "silent",
+        maxWaitForLoad: 15_000,
+        onlyCategories: ["performance"],
+        output: "json",
+        port: chrome.port,
+      }),
+      60_000,
+      "Lighthouse warm-up timed out.",
+    );
+
+    if (!result) {
+      throw new Error("Lighthouse did not return a result during warm-up.");
+    }
+  } finally {
+    chrome.kill();
+  }
 };
 
 const runLighthouse = async (origin, route) => {
@@ -244,6 +281,8 @@ const main = async () => {
     const origin = await waitForPreview(previewProcess, initialOrigin);
     const results = [];
 
+    await warmUpLighthouse(origin);
+
     for (const route of routes) {
       results.push(await runLighthouse(origin, route));
     }
@@ -255,6 +294,9 @@ const main = async () => {
         "Script bytes": result.scriptTransferSize,
         FCP: result.fcp,
         LCP: result.lcp,
+        "Speed Index": result.speedIndex,
+        TBT: result.tbt,
+        CLS: result.cls,
         "Total bytes": result.totalByteWeight,
       })),
     );

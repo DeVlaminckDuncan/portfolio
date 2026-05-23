@@ -38,7 +38,9 @@ bun run audit:performance:ci
 
 Use this CI-only variant only after `bun run build` has already produced
 `dist/`. It skips the extra build while preserving the same route discovery,
-Lighthouse threshold, approved runtime byte budget, and report output.
+Lighthouse threshold, approved runtime byte budget, and report output. The audit
+performs one discarded Lighthouse warm-up pass before scoring routes to reduce
+first-run variance on shared CI runners.
 
 The default audit runs without the production analytics token. It fails when:
 
