@@ -55,6 +55,27 @@ const isCurrentPath = (href: string) =>
       image={image}
       structuredData={structuredData}
     />
+    <script is:inline>
+      (() => {
+        const storageKey = 'portfolio-theme';
+        const validThemes = ['light', 'dark'];
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+        let theme = systemTheme;
+
+        try {
+          const storedTheme = localStorage.getItem(storageKey);
+          if (validThemes.includes(storedTheme)) {
+            theme = storedTheme;
+          }
+        } catch {
+          theme = systemTheme;
+        }
+
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {
       cloudflareWebAnalyticsToken && (
@@ -75,19 +96,58 @@ const isCurrentPath = (href: string) =>
             Duncan De Vlaminck
           </a>
 
-          <nav class="site-nav" aria-label="Primary navigation">
-            {
-              navItems.map((item) => (
-                <a
-                  href={item.href}
-                  aria-current={isCurrentPath(item.href) ? 'page' : undefined}
-                  data-astro-prefetch
+          <div class="site-header__actions">
+            <nav class="site-nav" aria-label="Primary navigation">
+              {
+                navItems.map((item) => (
+                  <a
+                    href={item.href}
+                    aria-current={isCurrentPath(item.href) ? 'page' : undefined}
+                    data-astro-prefetch
+                  >
+                    {item.label}
+                  </a>
+                ))
+              }
+            </nav>
+
+            <div class="theme-toggle">
+              <button
+                class="theme-toggle__button"
+                type="button"
+                aria-label="Theme: Light. Switch to dark mode"
+                data-theme-toggle
+              >
+                <svg
+                  aria-hidden="true"
+                  data-theme-icon="light"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
                 >
-                  {item.label}
-                </a>
-              ))
-            }
-          </nav>
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2" />
+                  <path d="M12 20v2" />
+                  <path d="m4.93 4.93 1.41 1.41" />
+                  <path d="m17.66 17.66 1.41 1.41" />
+                  <path d="M2 12h2" />
+                  <path d="M20 12h2" />
+                  <path d="m6.34 17.66-1.41 1.41" />
+                  <path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  data-theme-icon="dark"
+                  data-theme-icon-hidden
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                >
+                  <path d="M20.3 14.6A7.6 7.6 0 0 1 9.4 3.7 8.5 8.5 0 1 0 20.3 14.6Z" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </Container>
     </header>
@@ -119,6 +179,83 @@ const isCurrentPath = (href: string) =>
         />
       )
     }
+    <script is:inline>
+      (() => {
+        const storageKey = 'portfolio-theme';
+        const validThemes = ['light', 'dark'];
+        const root = document.documentElement;
+        const trigger = document.querySelector('[data-theme-toggle]');
+        const triggerIcons = Array.from(document.querySelectorAll('[data-theme-icon]'));
+        const labelByTheme = {
+          light: 'Light',
+          dark: 'Dark',
+        };
+
+        const systemPreference = window.matchMedia('(prefers-color-scheme: dark)');
+
+        const normalizeStoredTheme = (theme) => (validThemes.includes(theme) ? theme : null);
+
+        const getSystemTheme = () => (systemPreference.matches ? 'dark' : 'light');
+
+        const readStoredTheme = () => {
+          try {
+            return normalizeStoredTheme(localStorage.getItem(storageKey));
+          } catch {
+            return null;
+          }
+        };
+
+        const getEffectiveTheme = () => readStoredTheme() ?? getSystemTheme();
+
+        const writeTheme = (theme) => {
+          try {
+            localStorage.setItem(storageKey, theme);
+          } catch {
+            return;
+          }
+        };
+
+        const applyTheme = (theme) => {
+          const normalizedTheme = validThemes.includes(theme) ? theme : getSystemTheme();
+          const nextTheme = normalizedTheme === 'light' ? 'dark' : 'light';
+
+          root.dataset.theme = normalizedTheme;
+          trigger.setAttribute(
+            'aria-label',
+            `Theme: ${labelByTheme[normalizedTheme]}. Switch to ${nextTheme} mode`,
+          );
+
+          for (const icon of triggerIcons) {
+            icon.toggleAttribute(
+              'data-theme-icon-hidden',
+              icon.dataset.themeIcon !== normalizedTheme,
+            );
+          }
+        };
+
+        applyTheme(getEffectiveTheme());
+
+        trigger.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const selectedTheme = getEffectiveTheme() === 'light' ? 'dark' : 'light';
+
+          writeTheme(selectedTheme);
+          applyTheme(selectedTheme);
+        });
+
+        systemPreference.addEventListener('change', () => {
+          if (readStoredTheme() === null) {
+            applyTheme(getSystemTheme());
+          }
+        });
+
+        window.addEventListener('storage', (event) => {
+          if (event.key === storageKey) {
+            applyTheme(getEffectiveTheme());
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
 
@@ -162,6 +299,13 @@ const isCurrentPath = (href: string) =>
     padding: var(--space-4) 0;
   }
 
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-4);
+  }
+
   .site-brand {
     flex: 0 1 auto;
     color: var(--color-text);
@@ -202,6 +346,46 @@ const isCurrentPath = (href: string) =>
     color: var(--color-accent-foreground);
   }
 
+  .theme-toggle {
+    flex: 0 0 auto;
+  }
+
+  .theme-toggle__button {
+    display: inline-flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .theme-toggle__button:hover,
+  .theme-toggle__button:focus-visible {
+    background: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .theme-toggle svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .theme-toggle [data-theme-icon-hidden] {
+    display: none;
+  }
+
   .site-main {
     flex: 1;
     padding: var(--section-spacing) 0;
@@ -230,6 +414,7 @@ const isCurrentPath = (href: string) =>
 
   @media (max-width: 40rem) {
     .site-header__inner,
+    .site-header__actions,
     .site-footer__inner {
       align-items: flex-start;
       flex-direction: column;
@@ -238,5 +423,6 @@ const isCurrentPath = (href: string) =>
     .site-nav {
       justify-content: flex-start;
     }
+
   }
 </style>

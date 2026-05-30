@@ -46,26 +46,30 @@ Automated checks do not replace manual review. For accessibility passes, verify:
 - header navigation, project cards, contact links, external links, and CV
   download links are reachable and understandable with the keyboard;
 - focus outlines are visible on links and button-styled links;
+- the theme toggle is reachable by keyboard, names the current theme and toggle
+  action, and persists the selected theme;
 - each page has one `h1`, then sequential section and card headings;
 - external links that open a new tab include `rel="noopener noreferrer"`;
 - responsive navigation wraps without hiding or overlapping links.
 
 ## Contrast
 
-The current design tokens meet WCAG AA contrast for text use:
+The current design tokens meet WCAG AA contrast for text use in both themes:
 
-| Pair | Contrast |
-| :--- | ---: |
-| `--color-text` on `--color-page` | 15.48:1 |
-| `--color-text-muted` on `--color-page` | 6.07:1 |
-| `--color-accent` on `--color-page` | 8.44:1 |
-| `--color-text` on `--color-surface` | 16.45:1 |
-| `--color-text-muted` on `--color-surface` | 6.45:1 |
-| `--color-accent` on `--color-surface` | 8.97:1 |
-| `--color-accent-foreground` on `--color-accent` | 8.97:1 |
+| Pair | Light | Dark |
+| :--- | ---: | ---: |
+| `--color-text` on `--color-page` | 15.48:1 | 16.42:1 |
+| `--color-text-muted` on `--color-page` | 6.07:1 | 9.98:1 |
+| `--color-accent` on `--color-page` | 8.44:1 | 10.14:1 |
+| `--color-text` on `--color-surface` | 16.45:1 | 15.09:1 |
+| `--color-text-muted` on `--color-surface` | 6.45:1 | 9.17:1 |
+| `--color-accent` on `--color-surface` | 8.97:1 | 9.32:1 |
+| `--color-accent-foreground` on `--color-accent` | 8.97:1 | 9.96:1 |
+| `--color-focus` on `--color-page` | 4.44:1 | 11.58:1 |
 
 Borders are intentionally low contrast and are not used as the only way to
-communicate interactive state.
+communicate interactive state. Interactive elements also use text, background,
+hover, focus, or pressed-state changes.
 
 ## Issue #18 Outcome
 

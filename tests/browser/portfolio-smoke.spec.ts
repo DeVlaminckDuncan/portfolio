@@ -2,6 +2,7 @@ import { expect, type Locator, type Page, test } from "@playwright/test";
 
 const staticRoutes = ["/", "/about/", "/projects/", "/contact/"] as const;
 const cvHref = "/cv/CV-Duncan-De-Vlaminck-EN.pdf";
+const themeStorageKey = "portfolio-theme";
 
 const attachClientErrorTracking = (page: Page) => {
   const clientErrors: string[] = [];
@@ -27,6 +28,7 @@ const expectHealthyPage = async (page: Page, path: string) => {
   await expect(page.locator("h1")).toHaveCount(1);
   await expect(page.locator("main")).toBeVisible();
   await expect(page.locator("nav[aria-label='Primary navigation']")).toBeVisible();
+  await expect(page.locator("[data-theme-toggle]")).toBeVisible();
 
   const hasHorizontalOverflow = await page.evaluate(() => {
     const documentWidth = document.documentElement.scrollWidth;
@@ -38,6 +40,17 @@ const expectHealthyPage = async (page: Page, path: string) => {
 
   expect(hasHorizontalOverflow, `${path} should not overflow horizontally`).toBe(false);
   expect(clientErrors, `${path} should not emit console or page errors`).toEqual([]);
+};
+
+const expectCssToken = async (page: Page, token: string, expectedValue: string) => {
+  await expect
+    .poll(() =>
+      page.evaluate(
+        (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim(),
+        token,
+      ),
+    )
+    .toBe(expectedValue);
 };
 
 const clickLocatorCenter = async (page: Page, locator: Locator) => {
@@ -208,5 +221,90 @@ test.describe("portfolio user flows", () => {
 
     expect(response.ok()).toBe(true);
     expect(response.headers()["content-type"]).toContain("application/pdf");
+  });
+});
+
+test.describe("portfolio theme control", () => {
+  test("system dark preference applies dark tokens without a stored preference", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/");
+
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(
+      page.getByRole("button", { name: "Theme: Dark. Switch to light mode" }),
+    ).toBeVisible();
+    await expectCssToken(page, "--color-page", "#101418");
+    await expectCssToken(page, "--color-text", "#edf2f7");
+  });
+
+  test("missing or invalid stored preference falls back to system theme", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.addInitScript((key) => localStorage.setItem(key, "system"), themeStorageKey);
+    await page.goto("/");
+
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await expect(
+      page.getByRole("button", { name: "Theme: Light. Switch to dark mode" }),
+    ).toBeVisible();
+    await expectCssToken(page, "--color-page", "#f7f8fa");
+  });
+
+  test("manual theme toggles persist and survive reloads", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("/");
+
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await page.getByRole("button", { name: "Theme: Light. Switch to dark mode" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(
+      page.getByRole("button", { name: "Theme: Dark. Switch to light mode" }),
+    ).toBeVisible();
+    await expect
+      .poll(() => page.evaluate((key) => localStorage.getItem(key), themeStorageKey))
+      .toBe("dark");
+
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expectCssToken(page, "--color-page", "#101418");
+
+    await page.getByRole("button", { name: "Theme: Dark. Switch to light mode" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await expect(
+      page.getByRole("button", { name: "Theme: Light. Switch to dark mode" }),
+    ).toBeVisible();
+    await expect
+      .poll(() => page.evaluate((key) => localStorage.getItem(key), themeStorageKey))
+      .toBe("light");
+
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await expectCssToken(page, "--color-page", "#f7f8fa");
+  });
+
+  test("theme toggle is reachable and operable from the keyboard", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("/");
+
+    const trigger = page.getByRole("button", { name: "Theme: Light. Switch to dark mode" });
+    let reachedTrigger = false;
+
+    for (let tabIndex = 0; tabIndex < 8; tabIndex += 1) {
+      await page.keyboard.press("Tab");
+
+      if (await trigger.evaluate((button) => button === document.activeElement)) {
+        reachedTrigger = true;
+        break;
+      }
+    }
+
+    expect(reachedTrigger).toBe(true);
+
+    await page.keyboard.press("Enter");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(
+      page.getByRole("button", { name: "Theme: Dark. Switch to light mode" }),
+    ).toBeFocused();
   });
 });

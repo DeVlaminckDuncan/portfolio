@@ -11,16 +11,16 @@ framework or premature component variants.
 The public color interface lives in `src/styles/global.css` as CSS custom
 properties.
 
-| Token | Value | Role |
-| :--- | :--- | :--- |
-| `--color-page` | `#f7f8fa` | Default page background |
-| `--color-surface` | `#ffffff` | Cards, panels, and raised surfaces |
-| `--color-text` | `#17202a` | Primary foreground text |
-| `--color-text-muted` | `#53606c` | Supporting copy and secondary labels |
-| `--color-border` | `#d8e0e7` | Subtle separators and outlines |
-| `--color-accent` | `#1f4f5f` | Links, primary actions, and active states |
-| `--color-accent-foreground` | `#ffffff` | Text on accent backgrounds |
-| `--color-focus` | `#2f7d8f` | Keyboard focus outlines |
+| Token | Light | Dark | Role |
+| :--- | :--- | :--- | :--- |
+| `--color-page` | `#f7f8fa` | `#101418` | Default page background |
+| `--color-surface` | `#ffffff` | `#171d22` | Cards, panels, and raised surfaces |
+| `--color-text` | `#17202a` | `#edf2f7` | Primary foreground text |
+| `--color-text-muted` | `#53606c` | `#b4c0ca` | Supporting copy and secondary labels |
+| `--color-border` | `#d8e0e7` | `#2c3842` | Subtle separators and outlines |
+| `--color-accent` | `#1f4f5f` | `#8fc9d8` | Links, primary actions, and active states |
+| `--color-accent-foreground` | `#ffffff` | `#0d171b` | Text on accent backgrounds |
+| `--color-focus` | `#2f7d8f` | `#9bd6e5` | Keyboard focus outlines |
 
 Use `--color-text` on `--color-page` or `--color-surface` for primary reading
 surfaces. Use `--color-text-muted` only for supporting text where lower emphasis
@@ -59,7 +59,21 @@ corners; avoid larger radii unless a later issue adds a specific component need.
 
 ## Theme Policy
 
-Dark mode is explicitly deferred for this phase. The site declares
-`color-scheme: light`, and all current tokens are light-theme tokens. If dark
-mode is added later, introduce semantic dark values behind the same token names
-instead of creating parallel component styles.
+The site supports light and dark themes through the same semantic color tokens.
+By default, the rendered theme follows `prefers-color-scheme`. Visitors can
+override that behavior with the compact header theme toggle.
+
+Manual choices are stored in `localStorage` under `portfolio-theme`. Valid
+values are `light` and `dark`; invalid or missing values fall back to the
+current system preference. Explicit choices are applied through
+`html[data-theme='light']` and `html[data-theme='dark']`.
+
+The header uses an icon-only button to keep the portfolio navigation compact.
+The sun icon represents the active light theme, and the moon icon represents the
+active dark theme. The accessible label names the current theme and the toggle
+action.
+
+New components should continue to use the existing semantic tokens instead of
+adding component-specific light or dark colors. Only introduce a new color token
+when it represents a reusable design role that cannot be expressed by the
+current palette.
