@@ -191,10 +191,11 @@ test.describe("portfolio user flows", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
 
-    const menuToggle = page.getByRole("button", { name: "Open menu" });
-    const primaryNav = page.getByRole("navigation", { name: "Primary navigation" });
+    const menuToggle = page.locator("[data-nav-toggle]");
+    const primaryNav = page.locator("nav[aria-label='Primary navigation']");
 
     await expect(menuToggle).toBeVisible();
+    await expect(menuToggle).toHaveAttribute("aria-label", "Open menu");
     await expect(primaryNav).toBeHidden();
     await expectNoHorizontalOverflow(page, "/");
 
