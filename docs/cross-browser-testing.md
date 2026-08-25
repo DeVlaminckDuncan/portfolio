@@ -48,11 +48,12 @@ The Playwright smoke suite verifies:
 
 - homepage, About, projects list, contact, and all project detail pages
   discovered from the projects list;
-- one visible `h1`, visible main content, and visible primary navigation on
-  each page;
+- one visible `h1`, visible main content, and reachable primary navigation on
+  each page (desktop shows links inline; mobile opens the hamburger menu first);
 - no console errors, page errors, or horizontal layout overflow in each browser
-  project;
-- primary navigation between Projects, About, and Contact;
+  project, including with the mobile menu open and closed;
+- primary navigation between Projects, About, and Contact, including the mobile
+  hamburger open/close and Escape-to-close flow;
 - project-card navigation to a detail page and the Back to projects link;
 - contact page email, LinkedIn, and CV link attributes;
 - the static CV PDF returns a successful PDF response.

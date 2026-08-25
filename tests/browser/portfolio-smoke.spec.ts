@@ -20,16 +20,7 @@ const attachClientErrorTracking = (page: Page) => {
   return clientErrors;
 };
 
-const expectHealthyPage = async (page: Page, path: string) => {
-  const clientErrors = attachClientErrorTracking(page);
-
-  await page.goto(path);
-  await expect(page.locator("h1")).toBeVisible();
-  await expect(page.locator("h1")).toHaveCount(1);
-  await expect(page.locator("main")).toBeVisible();
-  await expect(page.locator("nav[aria-label='Primary navigation']")).toBeVisible();
-  await expect(page.locator("[data-theme-toggle]")).toBeVisible();
-
+const expectNoHorizontalOverflow = async (page: Page, path: string) => {
   const hasHorizontalOverflow = await page.evaluate(() => {
     const documentWidth = document.documentElement.scrollWidth;
     const viewportWidth = document.documentElement.clientWidth;
@@ -39,6 +30,44 @@ const expectHealthyPage = async (page: Page, path: string) => {
   });
 
   expect(hasHorizontalOverflow, `${path} should not overflow horizontally`).toBe(false);
+};
+
+const openPrimaryNavigationIfCollapsed = async (page: Page) => {
+  const menuToggle = page.locator("[data-nav-toggle]");
+
+  if (await menuToggle.isVisible()) {
+    const expanded = await menuToggle.getAttribute("aria-expanded");
+
+    if (expanded !== "true") {
+      await menuToggle.click();
+    }
+  }
+
+  await expect(page.locator("nav[aria-label='Primary navigation']")).toBeVisible();
+};
+
+const expectHealthyPage = async (page: Page, path: string) => {
+  const clientErrors = attachClientErrorTracking(page);
+
+  await page.goto(path);
+  await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator("h1")).toHaveCount(1);
+  await expect(page.locator("main")).toBeVisible();
+  await expect(page.locator("[data-theme-toggle]")).toBeVisible();
+
+  const menuToggle = page.locator("[data-nav-toggle]");
+  const primaryNav = page.locator("nav[aria-label='Primary navigation']");
+
+  if (await menuToggle.isVisible()) {
+    await expect(menuToggle).toHaveAttribute("aria-expanded", "false");
+    await expect(primaryNav).toBeHidden();
+    await openPrimaryNavigationIfCollapsed(page);
+    await expect(menuToggle).toHaveAttribute("aria-expanded", "true");
+  } else {
+    await expect(primaryNav).toBeVisible();
+  }
+
+  await expectNoHorizontalOverflow(page, path);
   expect(clientErrors, `${path} should not emit console or page errors`).toEqual([]);
 };
 
@@ -126,6 +155,7 @@ test.describe("portfolio user flows", () => {
 
   test("primary navigation reaches the main site sections", async ({ page }) => {
     await page.goto("/");
+    await openPrimaryNavigationIfCollapsed(page);
 
     await page
       .getByRole("navigation", { name: "Primary navigation" })
@@ -136,6 +166,7 @@ test.describe("portfolio user flows", () => {
     await expect(page).toHaveURL(/\/projects\/$/);
     await expect(page.getByRole("heading", { level: 1, name: "Projects" })).toBeVisible();
 
+    await openPrimaryNavigationIfCollapsed(page);
     await page
       .getByRole("navigation", { name: "Primary navigation" })
       .getByRole("link", {
@@ -145,6 +176,7 @@ test.describe("portfolio user flows", () => {
     await expect(page).toHaveURL(/\/about\/$/);
     await expect(page.getByRole("heading", { level: 1, name: "About" })).toBeVisible();
 
+    await openPrimaryNavigationIfCollapsed(page);
     await page
       .getByRole("navigation", { name: "Primary navigation" })
       .getByRole("link", {
@@ -153,6 +185,32 @@ test.describe("portfolio user flows", () => {
       .click();
     await expect(page).toHaveURL(/\/contact\/$/);
     await expect(page.getByRole("heading", { level: 1, name: "Contact" })).toBeVisible();
+  });
+
+  test("mobile navigation opens, closes with Escape, and does not overflow", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+
+    const menuToggle = page.getByRole("button", { name: "Open menu" });
+    const primaryNav = page.getByRole("navigation", { name: "Primary navigation" });
+
+    await expect(menuToggle).toBeVisible();
+    await expect(primaryNav).toBeHidden();
+    await expectNoHorizontalOverflow(page, "/");
+
+    await menuToggle.click();
+    await expect(menuToggle).toHaveAttribute("aria-expanded", "true");
+    await expect(menuToggle).toHaveAttribute("aria-label", "Close menu");
+    await expect(primaryNav).toBeVisible();
+    await expect(primaryNav.getByRole("link").first()).toBeFocused();
+    await expectNoHorizontalOverflow(page, "/");
+
+    await page.keyboard.press("Escape");
+    await expect(menuToggle).toHaveAttribute("aria-expanded", "false");
+    await expect(menuToggle).toHaveAttribute("aria-label", "Open menu");
+    await expect(primaryNav).toBeHidden();
+    await expect(menuToggle).toBeFocused();
+    await expectNoHorizontalOverflow(page, "/");
   });
 
   test("project cards open detail pages and detail pages return to the list", async ({ page }) => {

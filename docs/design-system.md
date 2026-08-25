@@ -71,7 +71,9 @@ current system preference. Explicit choices are applied through
 The header uses an icon-only button to keep the portfolio navigation compact.
 The sun icon represents the active light theme, and the moon icon represents the
 active dark theme. The accessible label names the current theme and the toggle
-action.
+action. Below `40rem`, primary navigation collapses into a hamburger disclosure
+while the theme toggle stays visible in the header chrome outside the menu
+panel.
 
 New components should continue to use the existing semantic tokens instead of
 adding component-specific light or dark colors. Only introduce a new color token

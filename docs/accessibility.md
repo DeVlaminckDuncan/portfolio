@@ -50,7 +50,10 @@ Automated checks do not replace manual review. For accessibility passes, verify:
   action, and persists the selected theme;
 - each page has one `h1`, then sequential section and card headings;
 - external links that open a new tab include `rel="noopener noreferrer"`;
-- responsive navigation wraps without hiding or overlapping links.
+- below `40rem`, primary navigation collapses behind a hamburger control with
+  `aria-expanded` / `aria-controls`, opens and closes with mouse, touch, and
+  keyboard, closes on Escape with focus returned to the menu button, and does
+  not obscure page content unexpectedly when closed.
 
 ## Contrast
 
