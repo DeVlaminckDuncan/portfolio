@@ -55,7 +55,9 @@ find a browser, install Chrome/Chromium locally and rerun the audit.
 Keep Astro's low-JavaScript advantage. Do not add client-side JavaScript,
 animation libraries, analytics scripts, or interactive islands unless the value
 is explicit and the audit still passes. The approved default JavaScript budget is
-reserved for Astro's navigation prefetch runtime.
+reserved for Astro's navigation prefetch runtime. Mobile navigation must stay
+collapsed with CSS before enhancement scripts run so first paint does not shift
+main content and inflate CLS.
 
 Cloudflare Web Analytics is the approved production-only exception. The shared
 Astro layout renders the official Cloudflare beacon only when
